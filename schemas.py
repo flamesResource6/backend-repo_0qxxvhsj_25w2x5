@@ -11,8 +11,9 @@ Model name is converted to lowercase for the collection name:
 - BlogPost -> "blogs" collection
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
+from datetime import date, time
 
 # Example schemas (replace with your own):
 
@@ -37,6 +38,20 @@ class Product(BaseModel):
     price: float = Field(..., ge=0, description="Price in dollars")
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+
+# Dental clinic appointment schema
+class Appointment(BaseModel):
+    """
+    Appointments collection schema
+    Collection name: "appointment"
+    """
+    patient_name: str = Field(..., min_length=2, description="Patient full name")
+    email: EmailStr = Field(..., description="Patient contact email")
+    phone: str = Field(..., min_length=7, max_length=20, description="Patient phone number")
+    appointment_date: date = Field(..., description="Desired appointment date (YYYY-MM-DD)")
+    appointment_time: str = Field(..., description="Desired appointment time, e.g., 09:30")
+    service: str = Field(..., description="Selected service type")
+    notes: Optional[str] = Field(None, description="Additional notes or concerns")
 
 # Add your own schemas here:
 # --------------------------------------------------
